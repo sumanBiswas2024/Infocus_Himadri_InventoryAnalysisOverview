@@ -198,7 +198,7 @@ sap.ui.define([
 
 			var inputGroup = this.byId("inputGroup");
 			var inputGroupValue = inputGroup.getValue();
-			
+
 			var inputType = this.byId("inputType");
 			var inputTypeValue = inputType.getValue();
 
@@ -220,30 +220,53 @@ sap.ui.define([
 
 			var isValid = true;
 			var message = '';
+			var inputPlantValidated = false; // Track if plant was already validated
 
 			if (oGlobalDataModel.getProperty("/allPlantVisible") === "X") {
-				if (!inputPlant.getValue()) {
+				// if (!inputPlant.getValue()) {
+				// 	inputPlant.setValueState(sap.ui.core.ValueState.Error);
+				// 	isValid = false;
+				// 	message += 'Plant Code, ';
+				// } else {
+				// 	inputPlant.setValueState(sap.ui.core.ValueState.None);
+				// }
+				// // Check if either Material Type or Material Group is selected
+				// if ((inputTypeValue || inputGroupValue) && !inputPlantValue) {
+				// 	inputPlant.setValueState(sap.ui.core.ValueState.Error);
+				// 	isValid = false;
+				// 	message += 'Plant Code, ';
+				// }
+
+				// Check if Material Type or Group is selected
+				var isTypeOrGroupSelected = inputTypeValue || inputGroupValue;
+
+				// Validate Plant only if required
+				if (!inputPlantValue && (isTypeOrGroupSelected || !inputPlantValidated)) {
 					inputPlant.setValueState(sap.ui.core.ValueState.Error);
 					isValid = false;
 					message += 'Plant Code, ';
-				} else {
+					inputPlantValidated = true; // Mark as validated
+				} else if (!inputPlantValidated) {
 					inputPlant.setValueState(sap.ui.core.ValueState.None);
 				}
-				if (!inputType.getValue()) {
-					inputType.setValueState(sap.ui.core.ValueState.Error);
-					isValid = false;
-					message += 'Material Type, ';
-				} else {
-					inputType.setValueState(sap.ui.core.ValueState.None);
-				}
-				if (!inputGroup.getValue()) {
+
+				// If Material Type or Material Group is selected, ensure that they are filled
+				if (inputTypeValue && !inputGroupValue) {
 					inputGroup.setValueState(sap.ui.core.ValueState.Error);
 					isValid = false;
 					message += 'Material Group, ';
 				} else {
 					inputGroup.setValueState(sap.ui.core.ValueState.None);
 				}
-				
+
+				if (inputGroupValue && !inputTypeValue) {
+					inputType.setValueState(sap.ui.core.ValueState.Error);
+					isValid = false;
+					message += 'Material Type, ';
+				} else {
+					inputType.setValueState(sap.ui.core.ValueState.None);
+				}
+
 			} else if (oGlobalDataModel.getProperty("/pddppPlantVisible") === "X") {
 				if (!inputStorage.getValue()) {
 					inputStorage.setValueState(sap.ui.core.ValueState.Error);
@@ -252,6 +275,13 @@ sap.ui.define([
 				} else {
 					inputStorage.setValueState(sap.ui.core.ValueState.None);
 				}
+			}
+
+			// Set visibility of "Material Type Description" column
+			if (inputPlantValue && inputGroupValue && inputTypeValue) {
+				oGlobalDataModel.setProperty("/showMaterialTypeColumn", true);
+			} else {
+				oGlobalDataModel.setProperty("/showMaterialTypeColumn", false);
 			}
 
 			if (!isValid) {
@@ -761,6 +791,40 @@ sap.ui.define([
 			oBinding.filter(aFilters);
 		},
 
+		plantClear: function(oEvent) {
+			var sValue = oEvent.getParameter("value"); // Get the input value
+			var oList = this.byId("idPlantCodeList"); // Get the list
+			var oGlobalDataModel = this.getOwnerComponent().getModel("globalData");
+
+			if (!sValue) { // If input is empty, clear selection
+				oList.removeSelections(true); // Deselect all items
+				oGlobalDataModel.setProperty("/plantCode", "");
+				oGlobalDataModel.setProperty("/MaterialDescription", "");
+			}
+		},
+		typeClear: function(oEvent) {
+			var sValue = oEvent.getParameter("value"); // Get the input value
+			var oList = this.byId("idMaterialTypeList"); // Get the list
+			var oGlobalDataModel = this.getOwnerComponent().getModel("globalData");
+
+			if (!sValue) { // If input is empty, clear selection
+				oList.removeSelections(true); // Deselect all items
+				oGlobalDataModel.setProperty("/typeDataId", "");
+				oGlobalDataModel.setProperty("/typeDataDescription", "");
+			}
+		},
+		groupClear: function(oEvent) {
+			var sValue = oEvent.getParameter("value"); // Get the input value
+			var oList = this.byId("idGroupList"); // Get the list
+			var oGlobalDataModel = this.getOwnerComponent().getModel("globalData");
+
+			if (!sValue) { // If input is empty, clear selection
+				oList.removeSelections(true); // Deselect all items
+				oGlobalDataModel.setProperty("/groupDataId", "");
+				oGlobalDataModel.setProperty("/groupDataDescription", "");
+			}
+		},
+
 		_handleValuePlantSearch: function(oEvent) {
 			var sValue = oEvent.getParameter("value");
 			// var oFilter = new Filter(
@@ -922,7 +986,7 @@ sap.ui.define([
 					materialGroupDesc: data.materialGroupDesc,
 					materialTypeDesc: data.materialTypeDesc,
 					totalStock: data.totalStock,
-					totalValue: parseFloat((data.totalValue / 10000000).toFixed(2))
+					totalValue: parseFloat((data.totalValue / 10000000))
 				};
 			});
 			return aData;
@@ -945,6 +1009,7 @@ sap.ui.define([
 			this.byId("splitter2").setVisible(false);
 			var that = this;
 			var oModel = this.getOwnerComponent().getModel();
+			var oGlobalModel = this.getOwnerComponent().getModel("globalData");
 			var oGlobalData = this.getOwnerComponent().getModel("globalData").getData();
 			var pUrl = "/matlGrpStckSet";
 
@@ -955,46 +1020,46 @@ sap.ui.define([
 			var aGroupID = oGlobalData.groupDataId || [];
 			var aTypeID = oGlobalData.typeDataId || [];
 
-			// Convert Array to OData filter format
-			// var sFilterQuery = "";
-			// if (aPlantID.length > 0) {
-			// 	sFilterQuery = aPlantID
-			// 		.map(function(sLoc) {
-			// 			return "plant eq '" + sLoc + "'";
-			// 		})
-			// 		.join(" or "); // Join conditions with 'or'
-			// }
-			// // var oFilterGroup = new Filter({
-			// // 	filters: [profitCenFilter, cmpnyCode, fiscalYear, fromDate, toDate],
-			// // 	and: true // AND condition
-			// // });
 			var aFilters = [];
-			var aPlantFilters = aPlantID.map(function(plnt) {
-				return new sap.ui.model.Filter("plant", sap.ui.model.FilterOperator.EQ, plnt)
-			});
+			if (aPlantID.length > 0) {
+				var aPlantFilters = aPlantID.map(function(plnt) {
+					return new sap.ui.model.Filter("plant", sap.ui.model.FilterOperator.EQ, plnt)
+				});
 
-			aFilters.push(new sap.ui.model.Filter({
-				filters: aPlantFilters,
-				and: false
-			}));
+				aFilters.push(new sap.ui.model.Filter({
+					filters: aPlantFilters,
+					and: false
+				}));
+			}
 
-			var aGroupFilters = aGroupID.map(function(grp) {
-				return new sap.ui.model.Filter("materialGroup", sap.ui.model.FilterOperator.EQ, grp)
-			})
+			if (aGroupID.length > 0) {
+				var aGroupFilters = aGroupID.map(function(grp) {
+					return new sap.ui.model.Filter("materialGroup", sap.ui.model.FilterOperator.EQ, grp)
+				})
 
-			aFilters.push(new sap.ui.model.Filter({
-				filters: aGroupFilters,
-				and: false
-			}));
+				aFilters.push(new sap.ui.model.Filter({
+					filters: aGroupFilters,
+					and: false
+				}));
+			}
 
-			var aTypeFilters = aTypeID.map(function(type) {
-				return new sap.ui.model.Filter("materialType", sap.ui.model.FilterOperator.EQ, type)
-			})
+			if (aTypeID.length > 0) {
+				var aTypeFilters = aTypeID.map(function(type) {
+					return new sap.ui.model.Filter("materialType", sap.ui.model.FilterOperator.EQ, type)
+				})
 
-			aFilters.push(new sap.ui.model.Filter({
-				filters: aTypeFilters,
-				and: false
-			}));
+				aFilters.push(new sap.ui.model.Filter({
+					filters: aTypeFilters,
+					and: false
+				}));
+			}
+
+			// Show/Hide Material Type Column based on all filters
+			if (aPlantID.length > 0 && aGroupID.length > 0 && aTypeID.length > 0) {
+				oGlobalModel.setProperty("/showMaterialTypeColumn", true); // Used in view to show/hide column
+			} else {
+				oGlobalModel.setProperty("/showMaterialTypeColumn", false);
+			}
 
 			sap.ui.core.BusyIndicator.show();
 			oModel.read(pUrl, {
@@ -1268,7 +1333,7 @@ sap.ui.define([
 				oPieChartValue.setVisible(true);
 			} else {
 				oVizFrame.setVisible(true);
-				oVizFrame.setVizType("column");  // For two seperate column
+				oVizFrame.setVizType("column"); // For two seperate column
 				oColumnChartsContainer.setVisible(true);
 				oPieChartsContainer.setVisible(false);
 				oPieChartStock.setVisible(false);
@@ -1371,7 +1436,7 @@ sap.ui.define([
 			return colors;
 		},
 		loadGraph: function(oData) {
-			var oVizFrame = this.byId("oVizFrame");  // For two seperate column
+			var oVizFrame = this.byId("oVizFrame"); // For two seperate column
 			var oGlobalDataModel = this.getOwnerComponent().getModel("globalData");
 			var otableTitle = oGlobalDataModel.getProperty("/tableTitle");
 			var oChartDataModel = this.getOwnerComponent().getModel("chartData");
@@ -1382,13 +1447,16 @@ sap.ui.define([
 					visible: true,
 					text: otableTitle
 				},
-				// legend: {
-				// 	title: {
-				// 		visible: true
-				// 	}
-				// },
+				legend: {
+					visible: false,
+					title: {
+						visible: true
+					}
+				},
 				categoryAxis: {
-
+					scale: {
+						type: "log"
+					},
 					// title: { visible: true, text: "Type / Group" },
 					label: {
 						angle: 0, // Ensures text is not angled
@@ -1410,18 +1478,20 @@ sap.ui.define([
 				plotArea: {
 					dataLabel: {
 						visible: true,
-						showTotal: true
-							// formatString: "#,##0"
-							// formatString: "#,##0.##"
+						showTotal: true,
+						// formatString: "#,##0"
+						// formatString: "#,##0.##"
+						formatString: '#,##0.0000'
 					},
 					// dataPointStyle: {
 					// 	rules: colorRules // Apply dynamically generated colors
 					// }
-					categoryGap: 100,
+					categoryGap: 250,
 					colorPalette: ['#00e600', '#0000b3'] // Green for IncomingBalance, Orange for OutgoingBalance
+
 				},
 				interaction: {
-					// behaviorType: null // enables tooltip by default
+					behaviorType: null, // enables tooltip by default
 					selectability: {
 						mode: "multiple"
 					}
@@ -1542,7 +1612,7 @@ sap.ui.define([
 			oPieChartStock.setVizProperties({
 				title: {
 					visible: true,
-					text: otableTitle + " (Stock Distribution)"
+					text: "Stock Distribution(MT)- " + otableTitle
 
 				},
 				legend: {
@@ -1575,7 +1645,7 @@ sap.ui.define([
 			oPieChartValue.setVizProperties({
 				title: {
 					visible: true,
-					text: otableTitle + " (Value Distribution)"
+					text: "Value Distribution(Cr)- " + otableTitle
 				},
 				legend: {
 					visible: true, // Ensure legend is shown
@@ -1800,6 +1870,9 @@ sap.ui.define([
 								oGlobalDataModel.setProperty("/togglePanelVisibility", "X");
 								oGlobalDataModel.setProperty("/allPlantVisible", "X");
 								oGlobalDataModel.setProperty("/pddppPlantVisible", "");
+								oGlobalDataModel.setProperty("/plantCode", "");
+								oGlobalDataModel.setProperty("/groupDataId", "");
+								oGlobalDataModel.setProperty("/typeDataId", "");
 							}
 
 							// disbaled the switches

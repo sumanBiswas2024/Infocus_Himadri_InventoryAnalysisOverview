@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<Dialog id="idMetarialGroupDialog" title="Select Metarial Group" draggable="true" resizable="true" afterClose=".onCloseDialogGroup">
+	<Dialog id="idMetarialGroupDialog" title="Select Material Group" draggable="true" resizable="true" afterClose=".onCloseDialogGroup">
 		<content>
 			<Toolbar>
 				<SearchField id="idSearchFieldGroup" placeholder="Search..." liveChange=".onSearchGroup"/>

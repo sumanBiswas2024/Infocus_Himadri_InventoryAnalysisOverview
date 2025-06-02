@@ -62,32 +62,33 @@
 									<!-- Radio Button Group -->
 									<RadioButtonGroup id="storageLoaction" columns="3" select="onRadioButtonPDPP" class="radioSpacing"
 										visible="{= ${globalData>/radioVisible} === 'X' }">
-										<RadioButton id="allPlantRadio" text="All Plant" visible="false"/>
+										<RadioButton id="allPlantRadio" text="All Plant Wise Data" visible="false"/>
 										<RadioButton id="pdppPlant" text="Paradip-Port(PDPP) Plant" visible="false"/>
+										<RadioButton id="typeGroup" text="Selected Type And Group Wise Data" visible="false"/>
 									</RadioButtonGroup>
 									<!-- Input: Plant -->
 									<VBox width="25%" visible="{= ${globalData>/allPlantVisible} === 'X' }" class="sapUiTinyMargin">
 										<Label text="Select Plant" design="Bold" required="true"/>
-										<Input id="inputPlant" placeholder="Enter Value" showValueHelp="true" valueHelpRequest="handleValuePlant" liveChange="onLiveChange"
-											showClearIcon="true"/>
+										<Input id="inputPlant" placeholder="Enter Value" showValueHelp="true" valueHelpRequest="handleValuePlant" liveChange="plantClear"
+											showClearIcon="true" valueHelpOnly="false"/>
 									</VBox>
 									<!-- Input: Type -->
 									<VBox width="25%" visible="{= ${globalData>/allPlantVisible} === 'X' }" class="sapUiTinyMargin">
-										<Label text="Select Material Type" design="Bold" required="true"/>
-										<Input id="inputType" placeholder="Enter Value" showValueHelp="true" valueHelpRequest="handleValueType" liveChange="onLiveChange"
-											showClearIcon="true"/>
+										<Label text="Select Material Type" design="Bold" required="false"/>
+										<Input id="inputType" placeholder="Enter Value" showValueHelp="true" valueHelpRequest="handleValueType" liveChange="typeClear"
+											showClearIcon="true" valueHelpOnly="false"/>
 									</VBox>
 									<!-- Input: Group -->
 									<VBox width="25%" visible="{= ${globalData>/allPlantVisible} === 'X' }" class="sapUiTinyMargin">
-										<Label text="Select Material Group" design="Bold" required="true"/>
-										<Input id="inputGroup" placeholder="Enter Value" showValueHelp="true" valueHelpRequest="handleValueGroup" liveChange="onLiveChange"
-											showClearIcon="true"/>
+										<Label text="Select Material Group" design="Bold" required="false"/>
+										<Input id="inputGroup" placeholder="Enter Value" showValueHelp="true" valueHelpRequest="handleValueGroup" liveChange="groupClear"
+											showClearIcon="true" valueHelpOnly="false"/>
 									</VBox>
 									<!-- Input: Storage Location -->
 									<VBox width="15%" visible="{= ${globalData>/pddppPlantVisible} === 'X' }" class="sapUiTinyMargin">
 										<Label text="Select Storage Location" design="Bold" required="true"/>
 										<Input id="inputStorage" placeholder="Enter Value" showValueHelp="true" valueHelpRequest="handleValueStorage" liveChange="onLiveChange"
-											showClearIcon="true"/>
+											showClearIcon="true" valueHelpOnly="false"/>
 									</VBox>
 									<!-- Buttons -->
 									<HBox width="auto" alignItems="Center" class="sapUiTinyMargin searchHBox">
@@ -145,8 +146,8 @@
 											<Column>
 												<Text text="Material Group Description" class="boldText"/>
 											</Column>
-											<Column>
-												<Text text="Material Type Description" class="boldText"/>
+											<Column visible="{= ${globalData>/showMaterialTypeColumn} }">
+												<Text  text="Material Type Description" class="boldText"/>
 											</Column>
 											<Column>
 												<Text text="Total Stock(MT)" class="boldText"/>
@@ -159,7 +160,7 @@
 											<ColumnListItem class="sapMListTblRow">
 												<cells >
 													<Text text="{stockData>materialGroupDesc}" class="boldText"/>
-													<Text text="{stockData>materialTypeDesc}" class="boldText"/>
+													<Text text="{stockData>materialTypeDesc}" class="boldText" visible="{= ${globalData>/showMaterialTypeColumn} }"/>
 													<Text text="{stockData>totalStock}" class="boldText"/>
 													<Text text="{stockData>totalValue}" class="boldText"/>
 												</cells>
@@ -203,7 +204,7 @@
 													<Label text="Total Value in Crore" class="balanceText" design="Bold"/>
 												</FlexBox>
 											</FlexBox>
-											<chart:ChartContainer showLegend="false" showLegendButton="false" autoAdjustHeight="true" id="chartContainer2" showFullScreen="true"
+											<chart:ChartContainer showLegend="false" showLegendButton="false" autoAdjustHeight="false" showPersonalization="false" id="chartContainer2" showFullScreen="true"
 												title="">
 												<chart:ChartContainerContent icon="sap-icon://horizontal-stacked-chart" title="Stacked_bar Chart">
 													<chart:content>

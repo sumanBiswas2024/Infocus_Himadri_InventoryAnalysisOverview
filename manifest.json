@@ -1,0 +1,206 @@
+{
+	"_version": "1.7.0",
+	"sap.app": {
+		"id": "com.infocus.mtlGrp_stockDetails",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"sourceTemplate": {
+			"id": "servicecatalog.connectivityComponent",
+			"version": "0.0.0"
+		},
+		"dataSources": {
+			"Z_INF_MATL_GRP_STCK_SRV": {
+				"uri": "/sap/opu/odata/sap/Z_INF_MATL_GRP_STCK_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/metadata.xml"
+				}
+			},
+			"plantService": {
+				"uri": "/sap/opu/odata/sap/ZPLANT_MASTER_VIEW_CDS/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/ZPLANT_MASTER_VIEW_CDS/metadata.xml"
+				}
+			},
+			"ZSL_MASTER_CDS": {
+				"uri": "/sap/opu/odata/sap/ZSL_MASTER_CDS/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/ZSL_MASTER_CDS/metadata.xml"
+				}
+			},
+			"Z_INF_MAT_GRP_MAST_CDS": {
+				"uri": "/sap/opu/odata/sap/Z_INF_MAT_GRP_MAST_CDS/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/Z_INF_MAT_GRP_MAST_CDS/metadata.xml"
+				}
+			},
+			"ZCDS_MATL_TYPE_MAST_CDS": {
+				"uri": "/sap/opu/odata/sap/ZCDS_MATL_TYPE_MAST_CDS/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/ZCDS_MATL_TYPE_MAST_CDS/metadata.xml"
+				}
+			}
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_belize"
+		]
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "com.infocus.mtlGrp_stockDetails.view.View1",
+			"type": "XML"
+		},
+		"dependencies": {
+			"minUI5Version": "1.30.0",
+			"libs": {
+				"sap.collaboration": {},
+				"sap.m": {},
+				"sap.ui.comp": {},
+				"sap.ui.core": {},
+				"sap.ui.layout": {},
+				"sap.ushell": {},
+				"sap.uxap": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "com.infocus.mtlGrp_stockDetails.i18n.i18n"
+				}
+			},
+			"": {
+				"dataSource": "Z_INF_MATL_GRP_STCK_SRV",
+				"preload": true,
+				"settings": {
+					"useBatch": false
+				}
+			},
+			"plantModel": {
+				"dataSource": "plantService",
+				"preload": true,
+				"settings": {
+					"useBatch": false
+				}
+			},
+			"ZSL_MASTER_CDS_Model": {
+				"dataSource": "ZSL_MASTER_CDS",
+				"preload": true,
+				"settings": {
+					"useBatch": false
+				}
+			},
+			"Z_INF_MAT_GRP_MAST_CDS_Model": {
+				"dataSource": "Z_INF_MAT_GRP_MAST_CDS",
+				"preLoad": true,
+				"setting": {
+					"useBatch": false
+				}
+			},
+			"ZCDS_MATL_TYPE_MAST_CDS_Model": {
+				"dataSource": "ZCDS_MATL_TYPE_MAST_CDS",
+				"preLoad": true,
+				"setting": {
+					"useBatch": false
+				}
+			},
+			"stockData": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
+			"storageLocData": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
+			"storageLocFetchData": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
+			"groupData":{
+				"type":"sap.ui.model.json.JSONModel"
+			},
+			"typeData":{
+				"type":"sap.ui.model.json.JSONModel"
+			},
+			"globalData": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
+			"chartData": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
+			"chartDataSL": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
+			"plantCodeDescription": {
+				"type": "sap.ui.model.json.JSONModel"
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"async": true,
+				"viewPath": "com.infocus.mtlGrp_stockDetails.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"clearAggregation": false
+			},
+			"routes": [
+				{
+					"name": "View",
+					"pattern": "",
+					"target": "View"
+				}
+			],
+			"targets": {
+				"View": {
+					"viewName": "View",
+					"viewLevel": 1
+				}
+			}
+		}
+	},
+	"sap.platform.abap": {
+		"uri": "/sap/bc/ui5_ui5/sap/zinventoryanlys",
+		"_version": "1.1.0"
+	}
+}

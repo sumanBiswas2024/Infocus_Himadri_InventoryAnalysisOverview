@@ -1,0 +1,67 @@
+{
+    "resources": [
+        {
+            "name": "i18n/i18n.properties",
+            "raw": "i18n/i18n.properties"
+        },
+        {
+            "name": "manifest.json"
+        },
+        {
+            "name": "neo-app.json"
+        },
+        {
+            "name": "model/models.js"
+        },
+        {
+            "name": "view/View1.view.xml"
+        },
+        {
+            "name": "index.html"
+        },
+        {
+            "name": "css/style.css"
+        },
+        {
+            "name": "Component.js"
+        },
+        {
+            "name": "controller/View1.controller.js"
+        },
+        {
+            "name": "controller/BaseController.js"
+        },
+        {
+            "name": "resources.json",
+            "merged": true
+        },
+        {
+            "name": "Fragment/PlantCodeDescription.fragment.xml"
+        },
+        {
+            "name": "Fragment/PlantCodeDescription2.fragment.xml"
+        },
+        {
+            "name": "Fragment/StorageLocation.fragment.xml"
+        },
+        {
+            "name": "Component-preload.js",
+            "merged": true
+        },
+        {
+            "name": "localService/ZSL_MASTER_CDS/metadata.xml"
+        },
+        {
+            "name": "localService/metadata.xml"
+        },
+        {
+            "name": "localService/ZPLANT_MASTER_VIEW_CDS/metadata.xml"
+        },
+        {
+            "name": ".project.json"
+        },
+        {
+            "name": ".user.project.json"
+        }
+    ]
+}

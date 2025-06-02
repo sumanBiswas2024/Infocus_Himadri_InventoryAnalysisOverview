@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog id="idPlantCodeDialog" title="Select Plant Code" draggable="true" resizable="true" afterClose=".onCloseDialog">
+		<content>
+			<Toolbar>
+				<SearchField id="idSearchField" placeholder="Search..." liveChange=".onSearchPlantCode"/>
+				<ToolbarSpacer/>
+				<CheckBox id="selectAllCheckBox" text="Select All" select=".onSelectAllChange"/>
+			</Toolbar>
+			<List id="idPlantCodeList" mode="MultiSelect" items="{plantCodeDescription>/}">
+				<StandardListItem title="{plantCodeDescription>Plant}" description="{plantCodeDescription>Description}" iconDensityAware="false"
+					iconInset="false"/>
+			</List>
+		</content>
+		<buttons>
+			<Button text="OK" press="onSelectPlantCode"/>
+			<Button text="Cancel" press=".onCloseDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

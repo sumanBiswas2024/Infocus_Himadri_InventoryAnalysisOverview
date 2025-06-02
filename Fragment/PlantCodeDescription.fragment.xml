@@ -1,0 +1,18 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <SelectDialog
+    	id="plantDialopList"
+        title="Select Plant"
+        items="{plantCodeDescription>/}"
+        search="_handleValuePlantSearch"
+        confirm="_handleValuePlantClose"
+        cancel="_handleValuePlantClose"
+        contentWidth="auto"
+        multiSelect="true"
+        class="sapUiPopupWithPadding">
+        <StandardListItem
+            title="{plantCodeDescription>Plant}"
+            description="{plantCodeDescription>Description}"
+            iconDensityAware="false"
+            iconInset="false" />
+    </SelectDialog>
+</core:FragmentDefinition>

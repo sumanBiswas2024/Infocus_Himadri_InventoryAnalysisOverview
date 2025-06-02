@@ -1,0 +1,445 @@
+<mvc:View controllerName="com.infocus.mtlGrp_stockDetails.controller.View1" xmlns:html="http://www.w3.org/1999/xhtml" xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form"
+	xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data"
+	xmlns:chart="sap.suite.ui.commons">
+	<App>
+		<pages>
+			<Page title="" enableScrolling="true" showNavButton="false" navButtonPress="onNavBack" showFooter="false">
+				<customHeader>
+					<Bar>
+						<contentMiddle>
+							<Title text="Inventory Analysis Overview" level="H2" titleStyle="H2" class="customTitleCenter"/>
+						</contentMiddle>
+					</Bar>
+				</customHeader>
+				<content>
+					<Panel id="panelForm" headerText="" class="sapUiResponsiveMargin border-lineRadius" expandable="true" expanded="true" width="auto">
+						<headerToolbar>
+							<OverflowToolbar></OverflowToolbar>
+						</headerToolbar>
+						<content>
+							<!--<FlexBox width="100%" id="panelFormBox" height="auto" alignItems="Center" justifyContent="Start">-->
+							<!--	<items>-->
+							<!--		<FlexBox>-->
+							<!--			<RadioButtonGroup id="storageLoaction" columns="3" select="onRadioButtonPDPP" class="radioSpacing">-->
+							<!--				<RadioButton id="allPlantRadio" text="All Plant" visible="false"/>-->
+							<!--				<RadioButton id="pdppPlant" text="Paradip-Port(PDPP) Plant" visible="false"/>-->
+							<!--			</RadioButtonGroup>-->
+							<!--		</FlexBox>-->
+							<!--		<HBox direction="Column" width="20%" visible="{= ${globalData>/allPlantVisible} === 'X' ? true : false}" class="HBoxCss">-->
+							<!--			<Label text="Select Plant " design="Bold" class="plantLabelText" required="true"/>-->
+							<!--			<Input id="inputPlant" class="sapUiSmallMarginBottom" type="Text" placeholder="Enter Value" showValueHelp="true"-->
+							<!--				valueHelpRequest="handleValuePlant" value="" required="true" liveChange="onLiveChange" showClearIcon="true"/>-->
+							<!--			<Label text="Select Group " design="Bold" class="plantLabelText" required="true"/>-->
+							<!--			<Input id="inputGroup" class="sapUiSmallMarginBottom" type="Text" placeholder="Enter Value" showValueHelp="true"-->
+							<!--				valueHelpRequest="handleValueGroup" value="" required="true" liveChange="onLiveChange" showClearIcon="true"/>-->
+							<!--					<Label text="Select Group " design="Bold" class="plantLabelText" required="true"/>-->
+							<!--			<Input id="inputType" class="sapUiSmallMarginBottom" type="Text" placeholder="Enter Value" showValueHelp="true"-->
+							<!--				valueHelpRequest="handleValueType" value="" required="true" liveChange="onLiveChange" showClearIcon="true"/>-->
+							<!--<ComboBox id="box0" items="{ path: 'plantCodeDescription>/', sorter: { path: 'Plant', descending: false } }"-->
+							<!--	selectionChange="onComboBoxChange" showSecondaryValues="true" >-->
+							<!--	<core:ListItem key="{plantCodeDescription>Plant}" text="{plantCodeDescription>Description}" additionalText="{plantCodeDescription>Plant}"/>-->
+							<!--</ComboBox>-->
+							<!--		</HBox>-->
+							<!--		<HBox direction="Column" width="20%" visible="{= ${globalData>/pddppPlantVisible} === 'X' ? true : false}" class="HBoxCss">-->
+							<!--			<Label text="Select Storage Location " design="Bold" class="plantLabelText" required="true"/>-->
+							<!--			<Input id="inputStorage" class="sapUiSmallMarginBottom" type="Text" placeholder="Enter Value" showValueHelp="true"-->
+							<!--				valueHelpRequest="handleValueStorage" value="" required="true" liveChange="onLiveChange" showClearIcon="true"/>-->
+							<!--		</HBox>-->
+							<!--		<HBox width="20%">-->
+							<!--			<Button id="searchData" icon="sap-icon://detail-view" text="" tooltip="Display Data" iconFirst="false" type="Emphasized"-->
+							<!--				class="smallIcon buttonPosition" press="getListData"/>-->
+							<!--			<Button id="clearData" icon="sap-icon://decline" text="" tooltip="Clear" iconFirst="false" type="Emphasized"-->
+							<!--				class="smallIcon buttonPosition" press="clearListData" enabled="false"/>-->
+							<!--		</HBox>-->
+							<!--<HBox direction="Column" width="10%"></HBox>-->
+							<!--<HBox direction="Column" width="10%"></HBox>-->
+							<!--	</items>-->
+							<!--</FlexBox>-->
+							<FlexBox width="100%" id="panelFormBox" height="auto" alignItems="Center" justifyContent="Start" wrap="NoWrap" direction="Row"
+								class="sapUiTinyMarginBottom">
+								<items>
+									<!-- Radio Button Group -->
+									<RadioButtonGroup id="storageLoaction" columns="3" select="onRadioButtonPDPP" class="radioSpacing"
+										visible="{= ${globalData>/radioVisible} === 'X' }">
+										<RadioButton id="allPlantRadio" text="All Plant" visible="false"/>
+										<RadioButton id="pdppPlant" text="Paradip-Port(PDPP) Plant" visible="false"/>
+									</RadioButtonGroup>
+									<!-- Input: Plant -->
+									<VBox width="25%" visible="{= ${globalData>/allPlantVisible} === 'X' }" class="sapUiTinyMargin">
+										<Label text="Select Plant" design="Bold" required="true"/>
+										<Input id="inputPlant" placeholder="Enter Value" showValueHelp="true" valueHelpRequest="handleValuePlant" liveChange="onLiveChange"
+											showClearIcon="true"/>
+									</VBox>
+									<!-- Input: Type -->
+									<VBox width="25%" visible="{= ${globalData>/allPlantVisible} === 'X' }" class="sapUiTinyMargin">
+										<Label text="Select Material Type" design="Bold" required="true"/>
+										<Input id="inputType" placeholder="Enter Value" showValueHelp="true" valueHelpRequest="handleValueType" liveChange="onLiveChange"
+											showClearIcon="true"/>
+									</VBox>
+									<!-- Input: Group -->
+									<VBox width="25%" visible="{= ${globalData>/allPlantVisible} === 'X' }" class="sapUiTinyMargin">
+										<Label text="Select Material Group" design="Bold" required="true"/>
+										<Input id="inputGroup" placeholder="Enter Value" showValueHelp="true" valueHelpRequest="handleValueGroup" liveChange="onLiveChange"
+											showClearIcon="true"/>
+									</VBox>
+									<!-- Input: Storage Location -->
+									<VBox width="15%" visible="{= ${globalData>/pddppPlantVisible} === 'X' }" class="sapUiTinyMargin">
+										<Label text="Select Storage Location" design="Bold" required="true"/>
+										<Input id="inputStorage" placeholder="Enter Value" showValueHelp="true" valueHelpRequest="handleValueStorage" liveChange="onLiveChange"
+											showClearIcon="true"/>
+									</VBox>
+									<!-- Buttons -->
+									<HBox width="auto" alignItems="Center" class="sapUiTinyMargin searchHBox">
+										<Button id="searchData" class="smallIcon buttonPosition" icon="sap-icon://detail-view" tooltip="Display Data" iconFirst="false"
+											type="Emphasized" press="getListData"/>
+										<Button id="clearData" class="smallIcon buttonPosition" icon="sap-icon://decline" tooltip="Clear" iconFirst="false" type="Emphasized"
+											press="clearListData" enabled="false"/>
+									</HBox>
+								</items>
+							</FlexBox>
+						</content>
+					</Panel>
+					<Panel expandable="false" expanded="false" class="sapUiResponsiveMargin border-lineRadius" width="auto" backgroundDesign="Solid">
+						<headerToolbar>
+							<Toolbar>
+								<FlexBox justifyContent="SpaceBetween" alignItems="Center" width="100%">
+									<HBox id="tableTilte" justifyContent="Center" alignItems="Center" class="sapUiTinyMarginBeginEnd">
+										<Title text="" level="H1" titleStyle="Auto" class="boldText"/>
+									</HBox>
+									<HBox id="tableSwitchBtn" visible="true" justifyContent="Center" alignItems="Center" class="sapUiTinyMarginBeginEnd">
+										<!--<VBox alignItems="Center" justifyContent="Center" class="sapUiTinyMarginBeginEnd">
+									<Label text="Split View" design="Bold"/>
+								</VBox>
+								<Switch id="splitViewSwitch" change="onTabularToChartChanged" state="false">
+									<layoutData>
+										<FlexItemData growFactor="1"/>
+									</layoutData>
+								</Switch>-->
+										<VBox alignItems="Center" justifyContent="Center" class="sapUiTinyMarginBeginEnd">
+											<Label text="Chart Data" design="Bold"/>
+										</VBox>
+										<Switch id="chartDataSwitch" change="onTabularToChartChanged" state="false" enabled="false">
+											<layoutData>
+												<FlexItemData growFactor="1"/>
+											</layoutData>
+										</Switch>
+										<VBox alignItems="Center" justifyContent="Center" class="sapUiTinyMarginBeginEnd">
+											<Label text="Tabular Data" design="Bold"/>
+										</VBox>
+										<Switch id="tabularDataSwitch" change="onTabularToChartChanged" state="false" enabled="false">
+											<layoutData>
+												<FlexItemData growFactor="1"/>
+											</layoutData>
+										</Switch>
+									</HBox>
+								</FlexBox>
+							</Toolbar>
+						</headerToolbar>
+						<content>
+							<ScrollContainer horizontal="true" vertical="true" width="100%" height="auto">
+								<l:Splitter id="splitter" height="450px" visible="{= ${globalData>/allPlantVisible} === 'X' ? true : false}">
+									<Table headerText="{globalData>/tableTitle}" id="dynamicTable2" items="{stockData>/}" fixedLayout="true" width="auto"
+										class="pdfTable boldText" mode="SingleSelectMaster">
+										<columns>
+											<Column>
+												<Text text="Material Group Description" class="boldText"/>
+											</Column>
+											<Column>
+												<Text text="Material Type Description" class="boldText"/>
+											</Column>
+											<Column>
+												<Text text="Total Stock(MT)" class="boldText"/>
+											</Column>
+											<Column>
+												<Text text="Total Value(Crore)" class="boldText"/>
+											</Column>
+										</columns>
+										<items>
+											<ColumnListItem class="sapMListTblRow">
+												<cells >
+													<Text text="{stockData>materialGroupDesc}" class="boldText"/>
+													<Text text="{stockData>materialTypeDesc}" class="boldText"/>
+													<Text text="{stockData>totalStock}" class="boldText"/>
+													<Text text="{stockData>totalValue}" class="boldText"/>
+												</cells>
+											</ColumnListItem>
+										</items>
+										<layoutData>
+											<l:SplitterLayoutData id="splitterLayoutData1" size="{= ${globalData>/togglePanelVisibility} === 'X' ? '0%' : '50%' }" resizable="false"/>
+										</layoutData>
+									</Table>
+									<Panel id="chartPanel" width="100%" height="100%">
+										<FlexBox direction="Row" justifyContent="SpaceBetween" alignItems="Center">
+											<RadioButtonGroup id="onSelectChartType" columns="5" select="onSelectChartType">
+												<RadioButton id="columnChart" text="Column Chart" selected="true"/>
+												<RadioButton id="pieChart" text="Pie Chart"/>
+												<!--<RadioButton id="lineChart" text="Line Chart"/>-->
+												<!--<RadioButton id="donutChart" text="Donut Chart"/>-->
+											</RadioButtonGroup>
+											<FlexBox direction="Row" justifyContent="Center" alignItems="Start">
+												<!--<Label text="(In Lacs)" design="Bold" class="balanceText"/>-->
+											</FlexBox>
+											<FlexBox direction="Row" justifyContent="Center" alignItems="Start">
+												<!--<FlexBox direction="Row" alignItems="Center">-->
+												<!--	<core:Icon class="incomingCircle"/>-->
+												<!--	<Label text="Total Stock in MT" class="balanceText" design="Bold"/>-->
+												<!--</FlexBox>-->
+												<!--<FlexBox direction="Row" alignItems="Center" class="sapUiTinyMarginBegin">-->
+												<!--	<core:Icon class="outgoingCircle"/>-->
+												<!--	<Label text="Total Value in Crore" class="balanceText" design="Bold"/>-->
+												<!--</FlexBox>-->
+											</FlexBox>
+										</FlexBox>
+										<!-- Column Chart (Default) -->
+										<VBox id="columnChartsContainer" visible="false">
+											<FlexBox direction="Row" justifyContent="Center" alignItems="Start">
+												<FlexBox direction="Row" alignItems="Center">
+													<core:Icon class="incomingCircle"/>
+													<Label text="Total Stock in MT" class="balanceText" design="Bold"/>
+												</FlexBox>
+												<FlexBox direction="Row" alignItems="Center" class="sapUiTinyMarginBegin">
+													<core:Icon class="outgoingCircle"/>
+													<Label text="Total Value in Crore" class="balanceText" design="Bold"/>
+												</FlexBox>
+											</FlexBox>
+											<chart:ChartContainer showLegend="false" showLegendButton="false" autoAdjustHeight="true" id="chartContainer2" showFullScreen="true"
+												title="">
+												<chart:ChartContainerContent icon="sap-icon://horizontal-stacked-chart" title="Stacked_bar Chart">
+													<chart:content>
+														<viz:VizFrame id="oVizFrame" busy="false" busyIndicatorDelay="1000" vizType="column" height='400px' width="100%"
+															vizProperties="{ plotArea: { drawingEffect: 'glossy' }, dataLabel: { visible: true }}" uiConfig="{ 'applicationSet': 'fiori' }">
+															<viz:dataset>
+																<viz.data:FlattenedDataset data="{chartData>/}">
+																	<viz.data:dimensions>
+																		<viz.data:DimensionDefinition name="Material Type Description" value="{chartData>materialTypeDesc}"/>
+																		<viz.data:DimensionDefinition name="Material Group Description" value="{chartData>materialGroupDesc}"/>
+																	</viz.data:dimensions>
+																	<viz.data:measures>
+																		<viz.data:MeasureDefinition name="Stock(MT)" value="{chartData>totalStock}"/>
+																		<viz.data:MeasureDefinition name="Value(Crore)" value="{chartData>totalValue}"/>
+																	</viz.data:measures>
+																</viz.data:FlattenedDataset>
+															</viz:dataset>
+															<viz:feeds>
+																<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Stock(MT),Value(Crore)"/>
+																<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Material Group Description"/>
+																<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Material Type Description"/>
+															</viz:feeds>
+														</viz:VizFrame>
+														<!--<VBox id="oVizFrame" class="sapUiSmallMargin">-->
+															<!-- Chart 1: Stock -->
+														<!--	<viz:VizFrame id="stockChart" vizType="column" height="400px" width="100%" uiConfig="{ 'applicationSet': 'fiori' }"-->
+														<!--		vizProperties="{ plotArea: { drawingEffect: 'glossy' }, dataLabel: { visible: true } }">-->
+														<!--		<viz:dataset>-->
+														<!--			<viz.data:FlattenedDataset data="{chartData>/}">-->
+														<!--				<viz.data:dimensions>-->
+														<!--					<viz.data:DimensionDefinition name="Material Type Description" value="{chartData>materialTypeDesc}"/>-->
+														<!--					<viz.data:DimensionDefinition name="Material Group Description" value="{chartData>materialGroupDesc}"/>-->
+														<!--				</viz.data:dimensions>-->
+														<!--				<viz.data:measures>-->
+														<!--					<viz.data:MeasureDefinition name="Stock(MT)" value="{chartData>totalStock}"/>-->
+														<!--				</viz.data:measures>-->
+														<!--			</viz.data:FlattenedDataset>-->
+														<!--		</viz:dataset>-->
+														<!--		<viz:feeds>-->
+														<!--			<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Stock(MT)"/>-->
+														<!--			<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Material Group Description,Material Type Description"/>-->
+														<!--		</viz:feeds>-->
+														<!--	</viz:VizFrame>-->
+															<!-- Chart 2: Value -->
+														<!--	<viz:VizFrame id="valueChart" vizType="column" height="400px" width="100%" uiConfig="{ 'applicationSet': 'fiori' }"-->
+														<!--		vizProperties="{ plotArea: { drawingEffect: 'glossy' }, dataLabel: { visible: true } }">-->
+														<!--		<viz:dataset>-->
+														<!--			<viz.data:FlattenedDataset data="{chartData>/}">-->
+														<!--				<viz.data:dimensions>-->
+														<!--					<viz.data:DimensionDefinition name="Material Type Description" value="{chartData>materialTypeDesc}"/>-->
+														<!--					<viz.data:DimensionDefinition name="Material Group Description" value="{chartData>materialGroupDesc}"/>-->
+														<!--				</viz.data:dimensions>-->
+														<!--				<viz.data:measures>-->
+														<!--					<viz.data:MeasureDefinition name="Value(Crore)" value="{chartData>totalValue}"/>-->
+														<!--				</viz.data:measures>-->
+														<!--			</viz.data:FlattenedDataset>-->
+														<!--		</viz:dataset>-->
+														<!--		<viz:feeds>-->
+														<!--			<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Value(Crore)"/>-->
+														<!--			<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Material Group Description,Material Type Description"/>-->
+														<!--		</viz:feeds>-->
+														<!--	</viz:VizFrame>-->
+														<!--</VBox>-->
+													</chart:content>
+												</chart:ChartContainerContent>
+											</chart:ChartContainer>
+										</VBox>
+										<!-- Pie Charts (Initially Hidden) -->
+										<VBox id="pieChartsContainer" visible="false">
+											<chart:ChartContainer showLegend="true" showLegendButton="true" autoAdjustHeight="true" id="chartContainer3" showFullScreen="true" title="">
+												<chart:ChartContainerContent icon="sap-icon://horizontal-stacked-chart" title="Stacked_bar Chart">
+													<chart:content>
+														<viz:VizFrame id="pieChartStock" visible="false" vizType="pie" height='500px' width="100%"
+															vizProperties="{ legend: { visible: true }, dataLabel: { visible: true }, title: { text: 'Stock Distribution' } }">
+															<viz:dataset>
+																<viz.data:FlattenedDataset data="{chartData>/}">
+																	<viz.data:dimensions>
+																		<viz.data:DimensionDefinition name="Material Type Description" value="{chartData>materialTypeDesc}"/>
+																		<viz.data:DimensionDefinition name="Material Group Description" value="{chartData>materialGroupDesc}"/>
+																	</viz.data:dimensions>
+																	<viz.data:measures>
+																		<viz.data:MeasureDefinition name="Total Stock" value="{chartData>totalStock}"/>
+																	</viz.data:measures>
+																</viz.data:FlattenedDataset>
+															</viz:dataset>
+															<viz:feeds>
+																<viz.feeds:FeedItem uid="size" type="Measure" values="Total Stock"/>
+																<viz.feeds:FeedItem uid="color" type="Dimension" values="Material Group Description"/>
+																<viz.feeds:FeedItem uid="color" type="Dimension" values="Material Type Description"/>
+															</viz:feeds>
+														</viz:VizFrame>
+													</chart:content>
+												</chart:ChartContainerContent>
+											</chart:ChartContainer>
+											<chart:ChartContainer showLegend="true" showLegendButton="true" autoAdjustHeight="true" id="chartContainer4" showFullScreen="true" title="">
+												<chart:ChartContainerContent icon="sap-icon://horizontal-stacked-chart" title="Stacked_bar Chart">
+													<chart:content>
+														<viz:VizFrame id="pieChartValue" visible="false" vizType="pie" height='500px' width="100%"
+															vizProperties="{ legend: { visible: true }, dataLabel: { visible: true }, title: { text: 'Value Distribution' } }">
+															<viz:dataset>
+																<viz.data:FlattenedDataset data="{chartData>/}">
+																	<viz.data:dimensions>
+																		<viz.data:DimensionDefinition name="Material Type Description" value="{chartData>materialTypeDesc}"/>
+																		<viz.data:DimensionDefinition name="Material Group Description" value="{chartData>materialGroupDesc}"/>
+																	</viz.data:dimensions>
+																	<viz.data:measures>
+																		<viz.data:MeasureDefinition name="Total Value" value="{chartData>totalValue}"/>
+																	</viz.data:measures>
+																</viz.data:FlattenedDataset>
+															</viz:dataset>
+															<viz:feeds>
+																<viz.feeds:FeedItem uid="size" type="Measure" values="Total Value"/>
+																<viz.feeds:FeedItem uid="color" type="Dimension" values="Material Group Description"/>
+																<viz.feeds:FeedItem uid="color" type="Dimension" values="Material Type Description"/>
+															</viz:feeds>
+														</viz:VizFrame>
+													</chart:content>
+												</chart:ChartContainerContent>
+											</chart:ChartContainer>
+										</VBox>
+										<!--</HBox>-->
+										<layoutData>
+											<l:SplitterLayoutData id="splitterLayoutData2" size="{= ${globalData>/togglePanelVisibility} === 'X' ? '100%' : '50%' }" resizable="false"/>
+										</layoutData>
+									</Panel>
+								</l:Splitter>
+								<l:Splitter id="splitter2" height="450px" visible="{= ${globalData>/pddppPlantVisible} === 'X' ? true : false}">
+									<Table headerText="{globalData>/tableTitle2}" id="dynamicTable3" items="{storageLocFetchData>/}" fixedLayout="true" width="auto"
+										class="pdfTable boldText" mode="SingleSelectMaster">
+										<columns>
+											<Column>
+												<Text text="Storage Location Id" class="boldText"/>
+											</Column>
+											<!--<Column>-->
+											<!--	<Text text="Storage Location Name" class="boldText"/>-->
+											<!--</Column>-->
+											<Column>
+												<Text text="Material Group Description" class="boldText"/>
+											</Column>
+											<Column>
+												<Text text="Total Stock(MT)" class="boldText"/>
+											</Column>
+										</columns>
+										<items>
+											<ColumnListItem class="sapMListTblRow">
+												<cells >
+													<Text text="{storageLocFetchData>storageLocation}" class="boldText"/>
+													<!--<Text text="" class="boldText"/>-->
+													<Text text="{storageLocFetchData>materialGroup}" class="boldText"/>
+													<Text text="{storageLocFetchData>totalStock}" class="boldText"/>
+												</cells>
+											</ColumnListItem>
+										</items>
+										<layoutData>
+											<l:SplitterLayoutData id="splitterLayoutData3" size="{= ${globalData>/togglePanelVisibility} === 'X' ? '100%' : '50%' }" resizable="false"/>
+										</layoutData>
+									</Table>
+									<Panel id="chartPanel2" width="100%" height="100%">
+										<FlexBox direction="Row" justifyContent="SpaceBetween" alignItems="Center">
+											<RadioButtonGroup id="onSelectChartType2" columns="5" select="onSelectChartTypeSL">
+												<RadioButton id="columnChart2" text="Column Chart" selected="true"/>
+												<RadioButton id="pieChart2" text="Pie Chart"/>
+												<!--<RadioButton id="lineChart" text="Line Chart"/>-->
+												<!--<RadioButton id="donutChart" text="Donut Chart"/>-->
+											</RadioButtonGroup>
+											<FlexBox direction="Row" justifyContent="Center" alignItems="Start">
+												<!--<Label text="(In Lacs)" design="Bold" class="balanceText"/>-->
+											</FlexBox>
+											<FlexBox direction="Row" justifyContent="Center" alignItems="Start"></FlexBox>
+										</FlexBox>
+										<VBox id="columnChartsContainerSL" visible="true">
+											<chart:ChartContainer showLegend="false" showLegendButton="false" autoAdjustHeight="true" id="chartContainer5" showFullScreen="true"
+												title="">
+												<chart:ChartContainerContent icon="sap-icon://horizontal-stacked-chart" title="Stacked_bar Chart">
+													<chart:content>
+														<viz:VizFrame id="oVizFrameSL" busy="false" busyIndicatorDelay="1000" vizType="column" height='400px' width="100%"
+															uiConfig="{ 'applicationSet': 'fiori' }">
+															<viz:dataset>
+																<viz.data:FlattenedDataset data="{chartDataSL>/}">
+																	<viz.data:dimensions>
+																		<viz.data:DimensionDefinition name="Material Group Description" value="{chartDataSL>storageLocIdMaterialGroup}"/>
+																	</viz.data:dimensions>
+																	<viz.data:measures>
+																		<viz.data:MeasureDefinition name="Total Stock(MT)" value="{chartDataSL>totalStock}"/>
+																		<!--<viz.data:MeasureDefinition name="Value(Crore)" value="{chartDataSL>totalValue}"/>-->
+																	</viz.data:measures>
+																</viz.data:FlattenedDataset>
+															</viz:dataset>
+															<viz:feeds>
+																<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Total Stock(MT)"/>
+																<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Material Group Description"/>
+																<!--<viz.feeds:FeedItem uid="color" type="Dimension" values="Material Group Description"/>-->
+																<!--<viz.feeds:FeedItem uid="color" type="Dimension" values="Material Group Description"/>-->
+															</viz:feeds>
+														</viz:VizFrame>
+													</chart:content>
+												</chart:ChartContainerContent>
+											</chart:ChartContainer>
+										</VBox>
+										<!-- Pie Charts (Initially Hidden) -->
+										<VBox id="pieChartsContainerSL" visible="false">
+											<chart:ChartContainer showLegend="true" showLegendButton="true" autoAdjustHeight="true" id="chartContainer6" showFullScreen="true" title="">
+												<chart:ChartContainerContent icon="sap-icon://horizontal-stacked-chart" title="Stacked_bar Chart">
+													<chart:content>
+														<viz:VizFrame id="pieChartStockSL" visible="false" vizType="pie" height='500px' width="100%"
+															vizProperties="{ legend: { visible: true }, dataLabel: { visible: true } }">
+															<viz:dataset>
+																<viz.data:FlattenedDataset data="{chartDataSL>/}">
+																	<viz.data:dimensions>
+																		<viz.data:DimensionDefinition name="Material Group Description" value="{chartDataSL>storageLocIdMaterialGroup}"/>
+																	</viz.data:dimensions>
+																	<viz.data:measures>
+																		<viz.data:MeasureDefinition name="Total Stock(MT)" value="{chartDataSL>totalStock}"/>
+																	</viz.data:measures>
+																</viz.data:FlattenedDataset>
+															</viz:dataset>
+															<viz:feeds>
+																<viz.feeds:FeedItem uid="size" type="Measure" values="Total Stock(MT)"/>
+																<viz.feeds:FeedItem uid="color" type="Dimension" values="Material Group Description"/>
+															</viz:feeds>
+														</viz:VizFrame>
+													</chart:content>
+												</chart:ChartContainerContent>
+											</chart:ChartContainer>
+										</VBox>
+										<!--</HBox>-->
+										<layoutData>
+											<l:SplitterLayoutData id="splitterLayoutData4" size="{= ${globalData>/togglePanelVisibility} === 'X' ? '0%' : '60%' }" resizable="false"/>
+										</layoutData>
+									</Panel>
+								</l:Splitter>
+							</ScrollContainer>
+						</content>
+					</Panel>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

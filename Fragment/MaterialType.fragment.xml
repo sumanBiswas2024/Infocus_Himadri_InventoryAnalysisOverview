@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog id="idMaterialTypeDialog" title="Select Material Type" draggable="true" resizable="true" afterClose=".onCloseDialogType">
+		<content>
+			<Toolbar>
+				<SearchField id="idSearchFieldMaterialType" placeholder="Search..." liveChange=".onSearchType"/>
+				<ToolbarSpacer/>
+				<CheckBox id="selectAllCheckBoxMaterialType" text="Select All" select=".onSelectAllChangeType"/>
+			</Toolbar>
+			<List id="idMaterialTypeList" mode="MultiSelect" items="{typeData>/}">
+				<StandardListItem title="{typeData>mtart}" description="{typeData>mtbez}" iconDensityAware="false"
+					iconInset="false"/>
+			</List>
+		</content>
+		<buttons>
+			<Button text="OK" press="onSelectType"/>
+			<Button text="Cancel" press=".onCloseDialogType"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

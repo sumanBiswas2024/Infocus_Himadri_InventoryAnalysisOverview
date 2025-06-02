@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog id="idMetarialGroupDialog" title="Select Metarial Group" draggable="true" resizable="true" afterClose=".onCloseDialogGroup">
+		<content>
+			<Toolbar>
+				<SearchField id="idSearchFieldGroup" placeholder="Search..." liveChange=".onSearchGroup"/>
+				<ToolbarSpacer/>
+				<CheckBox id="selectAllCheckBoxGroup" text="Select All" select=".onSelectAllChangeGroup"/>
+			</Toolbar>
+			<List id="idGroupList" mode="MultiSelect" items="{groupData>/}">
+				<StandardListItem title="{groupData>matkl}" description="{groupData>wgbez}" iconDensityAware="false"
+					iconInset="false"/>
+			</List>
+		</content>
+		<buttons>
+			<Button text="OK" press="onSelectGroup"/>
+			<Button text="Cancel" press=".onCloseDialogGroup"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

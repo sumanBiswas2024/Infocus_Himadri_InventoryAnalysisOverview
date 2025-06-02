@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog id="idStorageLocDialog" title="Select Storage Location" draggable="true" resizable="true" afterClose=".onCloseDialog">
+		<content>
+			<Toolbar>
+				<SearchField id="idSearchFieldStorageLoc" placeholder="Search..." liveChange=".onSearchPlantCodeStorageLoc"/>
+				<ToolbarSpacer/>
+				<CheckBox id="selectAllCheckBoxStorageLoc" text="Select All" select=".onSelectAllChangeStorageLoc"/>
+			</Toolbar>
+			<List id="idPlantCodeListStorageLoc" mode="MultiSelect" items="{storageLocData>/}">
+				<StandardListItem title="{storageLocData>lgort}" description="{storageLocData>lgobe}" iconDensityAware="false"
+					iconInset="false"/>
+			</List>
+		</content>
+		<buttons>
+			<Button text="OK" press="onSelectPlantCodeStorageLoc"/>
+			<Button text="Cancel" press=".onCloseDialogStorageLoc"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

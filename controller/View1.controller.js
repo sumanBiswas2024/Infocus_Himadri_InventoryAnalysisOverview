@@ -1378,7 +1378,7 @@ sap.ui.define([
 				var lightness = 45 + Math.floor(Math.random() * 10); // 45–55%
 
 				// var color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-				var color = `hsl(${hue}, 100%, 50%)`;
+				var color = `hsl(${hue}, 130%, 50%)`;
 
 				// Prevent too-similar hues using rounding
 				var roundedHue = Math.round(hue / minHueSeparation) * minHueSeparation;
@@ -1490,7 +1490,7 @@ sap.ui.define([
 			this.byId("stockChart").setVizProperties({
 				title: {
 					visible: true,
-					text: "Stock Distribution(MT)- " + otableTitle
+					text: otableTitle
 				},
 				legend: {
 					visible: false,
@@ -1552,7 +1552,7 @@ sap.ui.define([
 			this.byId("valueChart").setVizProperties({
 				title: {
 					visible: true,
-					text: "Value Distribution(Cr)- " + otableTitle
+					text: otableTitle
 				},
 				legend: {
 					visible: false,

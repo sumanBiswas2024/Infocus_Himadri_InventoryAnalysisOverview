@@ -166,79 +166,101 @@
 													<Label text="Total Value in Crore" class="balanceText" design="Bold"/>
 												</FlexBox>
 											</FlexBox>
-											<chart:ChartContainer showLegend="false" showLegendButton="false" autoAdjustHeight="false" showPersonalization="false" id="chartContainer2"
-												showFullScreen="true" title="">
-												<chart:ChartContainerContent icon="sap-icon://horizontal-stacked-chart" title="Stacked_bar Chart">
+											<!-- ==========  Old Chart Container Start ========== -->
+											<!--<chart:ChartContainer showLegend="false" showLegendButton="false" autoAdjustHeight="false" showPersonalization="false" id="chartContainer2"-->
+											<!--	showFullScreen="true" title="">-->
+											<!--	<chart:ChartContainerContent icon="sap-icon://horizontal-stacked-chart" title="Stacked_bar Chart">-->
+											<!--		<chart:content>-->
+											<!--			<viz:VizFrame id="oVizFrame" busy="false" busyIndicatorDelay="1000" vizType="column" height='400px' width="100%"-->
+											<!--				vizProperties="{ plotArea: { drawingEffect: 'glossy' }, dataLabel: { visible: true }}" uiConfig="{ 'applicationSet': 'fiori' }">-->
+											<!--				<viz:dataset>-->
+											<!--					<viz.data:FlattenedDataset data="{chartData>/}">-->
+											<!--						<viz.data:dimensions>-->
+											<!--							<viz.data:DimensionDefinition name="Material Type Description" value="{chartData>materialTypeDesc}"/>-->
+											<!--							<viz.data:DimensionDefinition name="Material Group Description" value="{chartData>materialGroupDesc}"/>-->
+											<!--						</viz.data:dimensions>-->
+											<!--						<viz.data:measures>-->
+											<!--							<viz.data:MeasureDefinition name="Stock(MT)" value="{chartData>totalStock}"/>-->
+											<!--							<viz.data:MeasureDefinition name="Value(Crore)" value="{chartData>totalValue}"/>-->
+											<!--						</viz.data:measures>-->
+											<!--					</viz.data:FlattenedDataset>-->
+											<!--				</viz:dataset>-->
+											<!--				<viz:feeds>-->
+											<!--					<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Stock(MT),Value(Crore)"/>-->
+											<!--					<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Material Group Description"/>-->
+											<!--					<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Material Type Description"/>-->
+											<!--				</viz:feeds>-->
+											<!--			</viz:VizFrame>-->
+											<!--		</chart:content>-->
+											<!--	</chart:ChartContainerContent>-->
+											<!--</chart:ChartContainer>-->
+											<!-- ==========  Old Chart Container End ========== -->
+											<!-- ==========  New Chart Container Start========== -->
+											<VBox id="oVizFrame" class="sapUiSmallMargin">
+												 <!--========== Stock Chart Container ========== -->
+												<chart:ChartContainer id="stockChartContainer" showLegend="false" showLegendButton="false" autoAdjustHeight="false"
+													showPersonalization="false" showFullScreen="true" title="Stock Distribution (MT)" level="H1" titleStyle="H1">
 													<chart:content>
-														<!--<viz:VizFrame id="oVizFrame" busy="false" busyIndicatorDelay="1000" vizType="column" height='400px' width="100%"-->
-														<!--	vizProperties="{ plotArea: { drawingEffect: 'glossy' }, dataLabel: { visible: true }}" uiConfig="{ 'applicationSet': 'fiori' }">-->
-														<!--	<viz:dataset>-->
-														<!--		<viz.data:FlattenedDataset data="{chartData>/}">-->
-														<!--			<viz.data:dimensions>-->
-														<!--				<viz.data:DimensionDefinition name="Material Type Description" value="{chartData>materialTypeDesc}"/>-->
-														<!--				<viz.data:DimensionDefinition name="Material Group Description" value="{chartData>materialGroupDesc}"/>-->
-														<!--			</viz.data:dimensions>-->
-														<!--			<viz.data:measures>-->
-														<!--				<viz.data:MeasureDefinition name="Stock(MT)" value="{chartData>totalStock}"/>-->
-														<!--				<viz.data:MeasureDefinition name="Value(Crore)" value="{chartData>totalValue}"/>-->
-														<!--			</viz.data:measures>-->
-														<!--		</viz.data:FlattenedDataset>-->
-														<!--	</viz:dataset>-->
-														<!--	<viz:feeds>-->
-														<!--		<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Stock(MT),Value(Crore)"/>-->
-														<!--		<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Material Group Description"/>-->
-														<!--		<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Material Type Description"/>-->
-														<!--	</viz:feeds>-->
-														<!--</viz:VizFrame>-->
-														<VBox id="oVizFrame" class="sapUiSmallMargin">
-															<!--Chart 1: Stock -->
-															<viz:VizFrame id="stockChart" vizType="column" height="400px" width="100%" uiConfig="{ 'applicationSet': 'fiori' }"
-																vizProperties="{ plotArea: { drawingEffect: 'glossy' }, dataLabel: { visible: true } }">
-																<viz:dataset>
-																	<viz.data:FlattenedDataset data="{chartData>/}">
-																		<viz.data:dimensions>
-																			<viz.data:DimensionDefinition name="Material Type Description" value="{chartData>materialTypeDesc}"/>
-																			<viz.data:DimensionDefinition name="Material Group Description" value="{chartData>materialGroupDesc}"/>
-																		</viz.data:dimensions>
-																		<viz.data:measures>
-																			<viz.data:MeasureDefinition name="Stock(MT)" value="{chartData>totalStock}"/>
-																		</viz.data:measures>
-																	</viz.data:FlattenedDataset>
-																</viz:dataset>
-																<viz:feeds>
-																	<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Stock(MT)"/>
-																	<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Material Group Description,Material Type Description"/>
-																</viz:feeds>
-																<viz:dependents>
-																	<viz:Popover id="stockPopOver"/>
-																</viz:dependents>
-															</viz:VizFrame>
-															<!--Chart 2: Value -->
-															<viz:VizFrame id="valueChart" vizType="column" height="400px" width="100%" uiConfig="{ 'applicationSet': 'fiori' }"
-																vizProperties="{ plotArea: { drawingEffect: 'glossy' }, dataLabel: { visible: true } }">
-																<viz:dataset>
-																	<viz.data:FlattenedDataset data="{chartData>/}">
-																		<viz.data:dimensions>
-																			<viz.data:DimensionDefinition name="Material Type Description" value="{chartData>materialTypeDesc}"/>
-																			<viz.data:DimensionDefinition name="Material Group Description" value="{chartData>materialGroupDesc}"/>
-																		</viz.data:dimensions>
-																		<viz.data:measures>
-																			<viz.data:MeasureDefinition name="Value(Crore)" value="{chartData>totalValue}"/>
-																		</viz.data:measures>
-																	</viz.data:FlattenedDataset>
-																</viz:dataset>
-																<viz:feeds>
-																	<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Value(Crore)"/>
-																	<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Material Group Description,Material Type Description"/>
-																</viz:feeds>
-																<viz:dependents>
-																	<viz:Popover id="valuePopOver"/>
-																</viz:dependents>
-															</viz:VizFrame>
-														</VBox>
+														<chart:ChartContainerContent icon="sap-icon://horizontal-bar-chart" title="">
+															<chart:content>
+																<viz:VizFrame id="stockChart" vizType="column" height="400px" width="100%" uiConfig="{ 'applicationSet': 'fiori' }"
+																	vizProperties="{ plotArea: { drawingEffect: 'glossy' }, dataLabel: { visible: true } }">
+																	<viz:dataset>
+																		<viz.data:FlattenedDataset data="{chartData>/}">
+																			<viz.data:dimensions>
+																				<viz.data:DimensionDefinition name="Material Type Description" value="{chartData>materialTypeDesc}"/>
+																				<viz.data:DimensionDefinition name="Material Group Description" value="{chartData>materialGroupDesc}"/>
+																			</viz.data:dimensions>
+																			<viz.data:measures>
+																				<viz.data:MeasureDefinition name="Stock(MT)" value="{chartData>totalStock}"/>
+																			</viz.data:measures>
+																		</viz.data:FlattenedDataset>
+																	</viz:dataset>
+																	<viz:feeds>
+																		<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Stock(MT)"/>
+																		<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Material Group Description,Material Type Description"/>
+																	</viz:feeds>
+																	<viz:dependents>
+																		<viz:Popover id="stockPopOver"/>
+																	</viz:dependents>
+																</viz:VizFrame>
+															</chart:content>
+														</chart:ChartContainerContent>
 													</chart:content>
-												</chart:ChartContainerContent>
-											</chart:ChartContainer>
+												</chart:ChartContainer>
+												<!-- ========== Value Chart Container ========== -->
+												<chart:ChartContainer id="valueChartContainer" showLegend="false" showLegendButton="false" autoAdjustHeight="false"
+													showPersonalization="false" showFullScreen="true" title="Value Distribution (Cr)" level="H1" titleStyle="H1">
+													<chart:content>
+														<chart:ChartContainerContent icon="sap-icon://bar-chart" title="">
+															<chart:content>
+																<viz:VizFrame id="valueChart" vizType="column" height="400px" width="100%" uiConfig="{ 'applicationSet': 'fiori' }"
+																	vizProperties="{ plotArea: { drawingEffect: 'glossy' }, dataLabel: { visible: true } }">
+																	<viz:dataset>
+																		<viz.data:FlattenedDataset data="{chartData>/}">
+																			<viz.data:dimensions>
+																				<viz.data:DimensionDefinition name="Material Type Description" value="{chartData>materialTypeDesc}"/>
+																				<viz.data:DimensionDefinition name="Material Group Description" value="{chartData>materialGroupDesc}"/>
+																			</viz.data:dimensions>
+																			<viz.data:measures>
+																				<viz.data:MeasureDefinition name="Value(Crore)" value="{chartData>totalValue}"/>
+																			</viz.data:measures>
+																		</viz.data:FlattenedDataset>
+																	</viz:dataset>
+																	<viz:feeds>
+																		<viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Value(Crore)"/>
+																		<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Material Group Description,Material Type Description"/>
+																	</viz:feeds>
+																	<viz:dependents>
+																		<viz:Popover id="valuePopOver"/>
+																	</viz:dependents>
+																</viz:VizFrame>
+															</chart:content>
+														</chart:ChartContainerContent>
+													</chart:content>
+												</chart:ChartContainer>
+											</VBox>
+											<!-- ==========  New Chart Container End========== -->
 										</VBox>
 										<!-- Pie Charts (Initially Hidden) -->
 										<VBox id="pieChartsContainer" visible="false">

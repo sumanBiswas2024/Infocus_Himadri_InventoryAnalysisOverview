@@ -1084,7 +1084,7 @@ sap.ui.define([
 							// totalStock: item.totalStock.replace(".", ","),
 							totalStock: parseFloat(item.totalStock).toLocaleString("en-US", { // Add coma in Thousand Separators
 								minimumFractionDigits: 2,
-								maximumFractionDigits: 2
+								maximumFractionDigits: 4
 							}),
 							totalValue: item.totalValue
 						};
@@ -1093,22 +1093,6 @@ sap.ui.define([
 					var stockDataModel = that.getOwnerComponent().getModel("stockData");
 					stockDataModel.setData(modifiedStockData);
 
-					// that.byId("panelForm").setExpanded(false);
-					// that.byId("chartDataSwitch").setState(true); // New Requirement To Load Chart View First
-					// that.byId("tabularDataSwitch").setState(false);
-					// For Chart Section
-					// var aGraphData = aStockCroreData.map(function(item, index) {
-					// 	return {
-					// 		uniqueId: index, // Add unique identifier
-					// 		plant: item.plant,
-					// 		materialGroup: item.materialGroup,
-					// 		// materialGroupDesc: item.materialGroupDesc,
-					// 		materialGroupDescUnique: item.materialGroupDesc + " (" + index + ")",
-					// 		totalStock: item.totalStock,
-					// 		totalValue: item.totalValue
-					// 	};
-					// });
-					// console.log(aGraphData);
 					var chartDataModel = that.getOwnerComponent().getModel("chartData");
 					chartDataModel.setData(aStockCroreData);
 
@@ -1333,7 +1317,7 @@ sap.ui.define([
 				oPieChartValue.setVisible(true);
 			} else {
 				oVizFrame.setVisible(true);
-				oVizFrame.setVizType("column"); // For two seperate column
+				// oVizFrame.setVizType("column"); // For two seperate column
 				oColumnChartsContainer.setVisible(true);
 				oPieChartsContainer.setVisible(false);
 				oPieChartStock.setVisible(false);
@@ -1360,92 +1344,153 @@ sap.ui.define([
 				oPieChartStock.setVisible(false);
 			}
 		},
-		generateBrightColors: function(numColors) {
-			var colors = [];
-			var usedColors = new Set();
-			var goldenRatio = 0.618033988749895; // Golden ratio conjugate
-			var hue = Math.random(); // Start with a random hue
+		// generateBrightColors: function(numColors) {
+		// 	var colors = [];
+		// 	var usedColors = new Set();
+		// 	var goldenRatio = 0.618033988749895; // Golden ratio conjugate
+		// 	var hue = Math.random(); // Start with a random hue
 
-			for (var i = 0; i < numColors; i++) {
-				hue += goldenRatio; // Distribute hues evenly
-				hue %= 1; // Keep within 0-1 range
-				var color = `hsl(${Math.round(hue * 360)}, 80%, 50%)`; // Adjusted for vibrancy
+		// 	for (var i = 0; i < numColors; i++) {
+		// 		hue += goldenRatio; // Distribute hues evenly
+		// 		hue %= 1; // Keep within 0-1 range
+		// 		var color = `hsl(${Math.round(hue * 360)}, 80%, 50%)`; // Adjusted for vibrancy
 
-				if (!usedColors.has(color)) {
-					usedColors.add(color);
-					colors.push(color);
-				}
-			}
+		// 		if (!usedColors.has(color)) {
+		// 			usedColors.add(color);
+		// 			colors.push(color);
+		// 		}
+		// 	}
 
-			return colors;
-		},
-		generateRandomColors: function(data) {
-			// let colors = [];
-			// let goldenRatio = 0.618033988749895;
-			// let hue = Math.random(); // Random starting hue
-
-			// for (let i = 0; i < numColors; i++) {
-			// 	hue += goldenRatio; // Space hues evenly
-			// 	hue %= 1;
-			// 	colors.push(`hsl(${Math.round(hue * 360)}, 75%, 50%)`); // More vibrant
-			// }
-
-			// return colors;
-
-			// const colorMap = {};
-			// let uniqueKeys = [];
-			// // Choose key format based on selected tab
-			// uniqueKeys = [...new Set(data.map(item => item.storageLocIdMaterialGroup))];
-			// // Generate HSL colors based on index
-			// uniqueKeys.forEach((key, i) => {
-			// 	const color = `hsl(${(i * 43) % 360}, 70%, 50%)`;
-			// 	colorMap[key] = color;
-			// });
-			// return {
-			// 	colorMap
-			// };
-			const colorMap = {};
-			data.forEach((item, index) => {
-				const colorKey = "colorKey_" + index; // Unique per row
-				item._colorKey = colorKey; // Add to item
-				const hue = Math.floor(Math.random() * 360);
-				colorMap[colorKey] = `hsl(${hue}, 70%, 50%)`;
-			});
-			return {
-				colorMap
-			};
-		},
+		// 	return colors;
+		// },
 		generateBrightColors: function(count) {
-			const colors = [];
-			while (colors.length < count) {
-				const hue = Math.floor(Math.random() * 360);
+			var colors = new Set();
+			var minHueSeparation = 15; // degrees between hues to reduce similarity
 
-				// Skip green hues (typically between 80–160)
-				if (hue >= 80 && hue <= 160) {
-					continue;
+			while (colors.size < count) {
+				var hue = Math.floor(Math.random() * 360);
+
+				// Skip green hues (80–160)
+				if (hue >= 80 && hue <= 160) continue;
+
+				// Optional: vary saturation/lightness a bit for uniqueness
+				var saturation = 90 + Math.floor(Math.random() * 10); // 90–100%
+				var lightness = 45 + Math.floor(Math.random() * 10); // 45–55%
+
+				// var color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+				var color = `hsl(${hue}, 100%, 50%)`;
+
+				// Prevent too-similar hues using rounding
+				var roundedHue = Math.round(hue / minHueSeparation) * minHueSeparation;
+
+				// Avoid duplicate/similar hues
+				if (![...colors].some(c => c.includes(`hsl(${roundedHue},`))) {
+					colors.add(color);
 				}
-
-				// HSL with high saturation and lightness for brightness
-				const h = hue;
-				const s = 100;
-				const l = 50;
-
-				const color = `hsl(${h}, ${s}%, ${l}%)`;
-				colors.push(color);
 			}
-			return colors;
+
+			return Array.from(colors);
 		},
 		loadGraph: function(oData) {
-			var oVizFrame = this.byId("oVizFrame"); // For two seperate column
+			// var oVizFrame = this.byId("oVizFrame"); // For two seperate column
 			var oGlobalDataModel = this.getOwnerComponent().getModel("globalData");
 			var otableTitle = oGlobalDataModel.getProperty("/tableTitle");
 			var oChartDataModel = this.getOwnerComponent().getModel("chartData");
 			var oChartDataModelData = oChartDataModel.getData(); // Get chart data
 
-			oVizFrame.setVizProperties({
+			// oVizFrame.setVizProperties({
+			// 	title: {
+			// 		visible: true,
+			// 		text: otableTitle
+			// 	},
+			// 	legend: {
+			// 		visible: false,
+			// 		title: {
+			// 			visible: true
+			// 		}
+			// 	},
+			// 	categoryAxis: {
+			// 		scale: {
+			// 			type: "log"
+			// 		},
+			// 		// title: { visible: true, text: "Type / Group" },
+			// 		label: {
+			// 			angle: 0, // Ensures text is not angled
+			// 			visible: true,
+			// 			style: {
+			// 				fontSize: "10px",
+			// 				fontWeight: "bold" // applies to all labels
+			// 			}
+			// 		},
+			// 	},
+			// 	valueAxis: {
+			// 		title: {
+			// 			visible: true
+			// 		},
+			// 		scale: {
+			// 			type: "log"
+			// 		}
+			// 	},
+			// 	plotArea: {
+			// 		dataLabel: {
+			// 			visible: true,
+			// 			showTotal: true,
+			// 			// formatString: "#,##0"
+			// 			// formatString: "#,##0.##"
+			// 			formatString: '#,##0.0000'
+			// 		},
+			// 		// dataPointStyle: {
+			// 		// 	rules: colorRules // Apply dynamically generated colors
+			// 		// }
+			// 		categoryGap: 250,
+			// 		colorPalette: ['#00e600', '#0000b3'] // Green for IncomingBalance, Orange for OutgoingBalance
+
+			// 	},
+			// 	interaction: {
+			// 		behaviorType: null, // enables tooltip by default
+			// 		selectability: {
+			// 			mode: "multiple"
+			// 		}
+			// 	}
+			// });
+
+			// 1) Generate as many colors as there are rows
+			var n = oChartDataModelData.length;
+			var aColors1 = this.generateBrightColors(n);
+			var aColors2 = this.generateBrightColors(n);
+
+			// 2) Build rules array
+			var aRules1 = oChartDataModelData.map(function(item, idx) {
+				return {
+					dataContext: {
+						// must exactly match the DimensionDefinition name & binding
+						"Material Type Description": item.materialTypeDesc || "",
+						"Material Group Description": item.materialGroupDesc || ""
+					},
+					properties: {
+						color: aColors1[idx]
+					}
+				};
+			});
+			var aRules2 = oChartDataModelData.map(function(item, idx) {
+				return {
+					dataContext: {
+						// must exactly match the DimensionDefinition name & binding
+						"Material Type Description": item.materialTypeDesc || "",
+						"Material Group Description": item.materialGroupDesc || ""
+					},
+					properties: {
+						color: aColors2[idx]
+					}
+				};
+			});
+
+			// For two seperate column
+			// Set random colors for Stock chart
+			this.byId("stockChart").setVizProperties({
 				title: {
 					visible: true,
-					text: otableTitle
+					text: "Stock Distribution(MT)- " + otableTitle
 				},
 				legend: {
 					visible: false,
@@ -1454,9 +1499,7 @@ sap.ui.define([
 					}
 				},
 				categoryAxis: {
-					scale: {
-						type: "log"
-					},
+
 					// title: { visible: true, text: "Type / Group" },
 					label: {
 						angle: 0, // Ensures text is not angled
@@ -1481,132 +1524,91 @@ sap.ui.define([
 						showTotal: true,
 						// formatString: "#,##0"
 						// formatString: "#,##0.##"
-						formatString: '#,##0.0000'
 					},
-					// dataPointStyle: {
-					// 	rules: colorRules // Apply dynamically generated colors
-					// }
-					categoryGap: 250,
-					colorPalette: ['#00e600', '#0000b3'] // Green for IncomingBalance, Orange for OutgoingBalance
-
+					dataPointStyle: {
+						rules: aRules1
+					},
+					categoryGap: 100,
+					// colorPalette: randomColors // Green for IncomingBalance, Orange for OutgoingBalance
 				},
 				interaction: {
-					behaviorType: null, // enables tooltip by default
+					// behaviorType: null // enables tooltip by default
 					selectability: {
 						mode: "multiple"
 					}
 				}
 			});
+			// Stock Chart Popover
+			var oStockChart = this.byId("stockChart");
+			var oStockPopOver = this.byId("stockPopOver");
+			oStockPopOver.connect(oStockChart.getVizUid());
+			oStockPopOver.setFormatString([{
+				"type": "Measure",
+				"format": "Number",
+				"precision": 2
+			}]);
 
-			// For two seperate column
-			// var uniqueItemsCount = oChartDataModelData.length;
+			// Generate a new set for Value chart
+			this.byId("valueChart").setVizProperties({
+				title: {
+					visible: true,
+					text: "Value Distribution(Cr)- " + otableTitle
+				},
+				legend: {
+					visible: false,
+					title: {
+						visible: true
+					}
+				},
+				categoryAxis: {
 
-			// var randomColors = this.generateBrightColors(uniqueItemsCount);
-
-			// // Set random colors for Stock chart
-			// this.byId("stockChart").setVizProperties({
-			// 	title: {
-			// 		visible: true,
-			// 		text: otableTitle+"(Stock Distribution)"
-			// 	},
-			// 	// legend: {
-			// 	// 	title: {
-			// 	// 		visible: true
-			// 	// 	}
-			// 	// },
-			// 	categoryAxis: {
-
-			// 		// title: { visible: true, text: "Type / Group" },
-			// 		label: {
-			// 			angle: 0, // Ensures text is not angled
-			// 			visible: true,
-			// 			style: {
-			// 				fontSize: "10px",
-			// 				fontWeight: "bold" // applies to all labels
-			// 			}
-			// 		},
-			// 	},
-			// 	valueAxis: {
-			// 		title: {
-			// 			visible: true
-			// 		},
-			// 		scale: {
-			// 			type: "log"
-			// 		}
-			// 	},
-			// 	plotArea: {
-			// 		dataLabel: {
-			// 			visible: true,
-			// 			showTotal: true
-			// 				// formatString: "#,##0"
-			// 				// formatString: "#,##0.##"
-			// 		},
-			// 		// dataPointStyle: {
-			// 		// 	rules: colorRules // Apply dynamically generated colors
-			// 		// }
-			// 		categoryGap: 100,
-			// 		colorPalette: randomColors // Green for IncomingBalance, Orange for OutgoingBalance
-			// 	},
-			// 	interaction: {
-			// 		// behaviorType: null // enables tooltip by default
-			// 		selectability: {
-			// 			mode: "multiple"
-			// 		}
-			// 	}
-			// });
-
-			// // Generate a new set for Value chart
-			// const randomColors2 = this.generateBrightColors(uniqueItemsCount);
-			// this.byId("valueChart").setVizProperties({
-			// 	title: {
-			// 		visible: true,
-			// 		text: otableTitle+"(Value Distribution)"
-			// 	},
-			// 	// legend: {
-			// 	// 	title: {
-			// 	// 		visible: true
-			// 	// 	}
-			// 	// },
-			// 	categoryAxis: {
-
-			// 		// title: { visible: true, text: "Type / Group" },
-			// 		label: {
-			// 			angle: 0, // Ensures text is not angled
-			// 			visible: true,
-			// 			style: {
-			// 				fontSize: "10px",
-			// 				fontWeight: "bold" // applies to all labels
-			// 			}
-			// 		},
-			// 	},
-			// 	valueAxis: {
-			// 		title: {
-			// 			visible: true
-			// 		},
-			// 		scale: {
-			// 			type: "log"
-			// 		}
-			// 	},
-			// 	plotArea: {
-			// 		dataLabel: {
-			// 			visible: true,
-			// 			showTotal: true
-			// 				// formatString: "#,##0"
-			// 				// formatString: "#,##0.##"
-			// 		},
-			// 		// dataPointStyle: {
-			// 		// 	rules: colorRules // Apply dynamically generated colors
-			// 		// }
-			// 		categoryGap: 100,
-			// 		colorPalette: randomColors2 // Green for IncomingBalance, Orange for OutgoingBalance
-			// 	},
-			// 	interaction: {
-			// 		// behaviorType: null // enables tooltip by default
-			// 		selectability: {
-			// 			mode: "multiple"
-			// 		}
-			// 	}
-			// });
+					// title: { visible: true, text: "Type / Group" },
+					label: {
+						angle: 0, // Ensures text is not angled
+						visible: true,
+						style: {
+							fontSize: "10px",
+							fontWeight: "bold" // applies to all labels
+						}
+					},
+				},
+				valueAxis: {
+					title: {
+						visible: true
+					},
+					scale: {
+						type: "log"
+					}
+				},
+				plotArea: {
+					dataLabel: {
+						visible: true,
+						showTotal: true,
+						// formatString: "#,##0"
+						formatString: "#,##0.####"
+					},
+					dataPointStyle: {
+						rules: aRules2
+					},
+					categoryGap: 100,
+					// colorPalette: randomColors2 // Green for IncomingBalance, Orange for OutgoingBalance
+				},
+				interaction: {
+					// behaviorType: null // enables tooltip by default
+					selectability: {
+						mode: "multiple"
+					}
+				}
+			});
+			// Value Chart Popover
+			var oValueChart = this.byId("valueChart");
+			var oValuePopOver = this.byId("valuePopOver");
+			oValuePopOver.connect(oValueChart.getVizUid());
+			oValuePopOver.setFormatString([{
+				"type": "Measure",
+				"format": "Number",
+				"precision": 2
+			}]);
 
 			var oPieChartStock = this.byId("pieChartStock");
 			oPieChartStock.setVizProperties({
